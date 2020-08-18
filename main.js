@@ -23,7 +23,7 @@ function searchMusic(){
     .then(data => {
         storedData = data;
         const element = data.data
-        console.log(element);
+        
         for(let i = 0; i< element.length; i++){
             const songTitle = element[i].title;
             const artist =element[i].artist.name;
@@ -31,7 +31,7 @@ function searchMusic(){
             searchResult.innerHTML += ` <div class="single-result row align-items-center my-3 p-3">
                                             <div class="col-md-6">
                                                 <h3 class="lyrics-name"> ${songTitle} </h3>
-                                                <p class="author lead">Album by <span> ${artist} </span></p>
+                                                <p class="author lead">Album by <span class="text-success"> ${artist} </span></p>
                                             </div>
                                             <div class="col-md-6 text-md-right text-center">
                                             <a href="#lylicsDetail"><button onClick="getDetail(${id})" class="btn btn-success">Get Details</button></a>
@@ -61,24 +61,24 @@ function getDetail(id){
             const img = data.album.cover_medium;
             const download = data.link;
             const preview = data.preview;
-            document.getElementById('lylicsDetail').innerHTML += `<div class="details">
+            document.getElementById('lylicsDetail').innerHTML = `<div class="details">
                                                                 <h2 class="text-success mb-4">Song Details</h2>
-                                                                <img src="${img}" alt="">
-                                                                <h3>Song ID: ${songID}</h3>
-                                                                <h3>Song Title: ${songTitle}</>
-                                                                <h3>Artist Name: ${artist}</h3>
+                                                                <img class="mb-4" src="${img}" alt="">
+                                                                <h3> <span class="text-success mt-4"> Song ID:</span> ${songID}</h3>
+                                                                <h3> <span class="text-success mt-3"> Song Title: </span> ${songTitle}</>
+                                                                <h3> <span class="text-success mt-3">Artist Name: </span> ${artist}</h3>
                                                             </div>`
             if(hour == 0 && min == 0){
                 document.getElementById('lylicsDetail').innerHTML += `<div class="details">
-                                                                    <h3>Duration: ${sec} sec</h3>
+                                                                    <h3> <span class="text-success mt-3"> Duration: </span> ${sec} sec</h3>
                                                                 </div>`
             }else if(hour == 0){
                 document.getElementById('lylicsDetail').innerHTML += `<div class="details">
-                                                                    <h3>Duration: ${min} min ${sec} sec</h3>
+                                                                    <h3> <span class="text-success mt-3"> Duration: </span>  ${min} min ${sec} sec</h3>
                                                                 </div>`
             } else{
                 document.getElementById('lylicsDetail').innerHTML += `<div class="details">
-                                                                    <h3>Duration: ${hour} hour ${min} min ${sec} sec</h3>
+                                                                    <h3> <span class="text-success mt-3"> Duration: </span>  ${hour} hour ${min} min ${sec} sec</h3>
                                                                 </div>`
             }
             document.getElementById('lylicsDetail').innerHTML += `<div class="details">
@@ -95,19 +95,19 @@ function getLyrics(id){
     for (let i = 0; i < 10; i++) {
         const data = storedData.data[i];
         if(data.id == id){
-            const artistName = data.artist.name;
+            const artist = data.artist.name;
             const songTitle = data.title;
-            fetch(`https://api.lyrics.ovh/v1/${artistName}/${songTitle}`)
+            fetch(`https://api.lyrics.ovh/v1/${artist}/${songTitle}`)
             .then(res => res.json())
             .then(data => {
                 let lyrics = data.lyrics;
                 if(lyrics == undefined){
                     lyrics = `Song Lyrics Not Found. Try for another song`;
                 }
-                document.getElementById('lylicsDetail').innerHTML += `<div class="single-lyrics text-center">
+                document.getElementById('lylicsDetail').innerHTML = `<div class="single-lyrics text-center">
                                                                             <button class="btn go-back">&lsaquo;</button>
                                                                             <h2 class="text-success mb-4">Song Lyrics</h2>
-                                                                            <h5>${lyrics}</h5>
+                                                                            <pre class="text-white">${lyrics}</pre>
                                                                         </div>`
             })
         }
