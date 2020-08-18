@@ -14,8 +14,9 @@ searchInput.addEventListener('keypress', function(){
 function searchMusic(){
 
     const searchResult = document.querySelector('.search-result');
-    document.getElementById('lylicsDetail').innerHTML = '';
     searchResult.innerHTML = '';
+    document.getElementById('lylicsDetail').innerHTML = '';
+
     const inputValue = searchInput.value;
     fetch(`https://api.lyrics.ovh/suggest/${inputValue}`)
     .then(res => res.json())
@@ -92,9 +93,10 @@ function getDetail(id){
 
 function getLyrics(id){
     for (let i = 0; i < 10; i++) {
-        if(storedData.data[i].id == id){
-            const artistName = storedData.data[i].artist.name;
-            const songTitle = storedData.data[i].title;
+        const data = storedData.data[i];
+        if(data.id == id){
+            const artistName = data.artist.name;
+            const songTitle = data.title;
             fetch(`https://api.lyrics.ovh/v1/${artistName}/${songTitle}`)
             .then(res => res.json())
             .then(data => {
@@ -102,14 +104,12 @@ function getLyrics(id){
                 if(lyrics == undefined){
                     lyrics = `Song Lyrics Not Found. Try for another song`;
                 }
-                document.getElementById('lylicsDetail').innerHTML = `<div class="single-lyrics text-center">
+                document.getElementById('lylicsDetail').innerHTML += `<div class="single-lyrics text-center">
                                                                             <button class="btn go-back">&lsaquo;</button>
                                                                             <h2 class="text-success mb-4">Song Lyrics</h2>
                                                                             <h5>${lyrics}</h5>
                                                                         </div>`
             })
-            
-            
         }
     }
     
